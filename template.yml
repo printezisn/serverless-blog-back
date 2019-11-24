@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  EdnaBlogFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: serverless-blog-back
+      Runtime: go1.x
+      MemorySize: 1024
+      Timeout: 15
+      Events:
+        EdnaBlogApiGetAll:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: GET
+        EdnaBlogApiGet:
+          Type: Api
+          Properties:
+            Path: /posts/{id+}
+            Method: GET
+        EdnaBlogApiDelete:
+          Type: Api
+          Properties:
+            Path: /posts/{id+}
+            Method: DELETE
+        EdnaBlogApiPut:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: PUT
+        EdnaBlogApiPost:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: POST
