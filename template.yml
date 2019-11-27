@@ -47,26 +47,6 @@ Resources:
           ProvisionedThroughput: 
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "5"
-        - 
-          IndexName: "creationTimestamp-id-index2"
-          KeySchema: 
-            - 
-              AttributeName: "creationTimestamp"
-              KeyType: "HASH"
-            - 
-              AttributeName: "id"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "title"
-              - "slug"
-              - "description"
-              - "revision"
-              - "updateTimestamp"
-            ProjectionType: "INCLUDE"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: "5"
-            WriteCapacityUnits: "5"
   EdnaBlogFunction:
     Type: AWS::Serverless::Function
     Properties:
