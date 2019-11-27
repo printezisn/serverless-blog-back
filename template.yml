@@ -15,9 +15,6 @@ Resources:
         - 
           AttributeName: "id"
           AttributeType: "S"
-        - 
-          AttributeName: "creationTimestamp"
-          AttributeType: "N"
       KeySchema: 
         - 
           AttributeName: "id"
@@ -26,7 +23,7 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
       TableName: "posts"
-      
+
   EdnaBlogFunction:
     Type: AWS::Serverless::Function
     Properties:
