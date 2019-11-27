@@ -69,9 +69,6 @@ func (repo *Repo) Update(revision int64, post model.BlogPost) (model.BlogPost, e
 			":body": {
 				S: aws.String(post.Body),
 			},
-			":slug": {
-				S: aws.String(post.Slug),
-			},
 			":updateTimestamp": {
 				N: aws.String(strconv.FormatInt(post.UpdateTimestamp, 10)),
 			},
@@ -90,7 +87,7 @@ func (repo *Repo) Update(revision int64, post model.BlogPost) (model.BlogPost, e
 		},
 		ReturnValues:        aws.String("UPDATED_NEW"),
 		ConditionExpression: aws.String("revision = :oldRevision"),
-		UpdateExpression: aws.String("set title = :title, description = :description, slug = :slug, body = :body, " +
+		UpdateExpression: aws.String("set title = :title, description = :description, body = :body, " +
 			"updateTimestamp = :updateTimestamp, revision = :newRevision"),
 	}
 
@@ -145,7 +142,7 @@ func (repo *Repo) GetAll(pageSize int64) ([]model.BlogPost, error) {
 	repo.createClient()
 
 	scanInput := &dynamodb.ScanInput{
-		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("slug"), aws.String("description"),
+		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("description"),
 			aws.String("revision"), aws.String("creationTimestamp"), aws.String("updateTimestamp")},
 		TableName: aws.String(repo.tableName),
 		IndexName: aws.String(repo.indexName),
@@ -171,7 +168,7 @@ func (repo *Repo) GetMore(lastID string, lastCreationTimestamp int64, pageSize i
 	repo.createClient()
 
 	scanInput := &dynamodb.ScanInput{
-		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("slug"), aws.String("description"),
+		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("description"),
 			aws.String("revision"), aws.String("creationTimestamp"), aws.String("updateTimestamp")},
 		ExclusiveStartKey: map[string]*dynamodb.AttributeValue{
 			"creationTimestamp": {

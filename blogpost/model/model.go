@@ -10,7 +10,6 @@ import (
 type BlogPost struct {
 	ID                string `json:"id"`
 	Title             string `json:"title"`
-	Slug              string `json:"slug"`
 	Description       string `json:"description"`
 	Body              string `json:"body"`
 	Revision          int64  `json:"revision"`
@@ -42,10 +41,6 @@ func (post BlogPost) Validate() []string {
 			&post.Title,
 			validation.Required.Error("The title is required."),
 			validation.Length(0, 250).Error("The title may have up to 250 characters.")),
-		validation.Field(
-			&post.Slug,
-			validation.Required.Error("The slug is required."),
-			validation.Length(0, 250).Error("The slug may have up tp 250 characters.")),
 		validation.Field(
 			&post.Description,
 			validation.Required.Error("The description is required."),
