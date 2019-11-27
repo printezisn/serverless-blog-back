@@ -5,8 +5,10 @@ phases:
         golang: 1.13
   build:
     commands:
+      - cp -r * ./tmp
       - mkdir -p ./github.com/printezisn/serverless-blog-back/
-      - cp -r * ./github.com/printezisn/serverless-blog-back/
+      - cp -r ./tmp/* ./github.com/printezisn/serverless-blog-back/
+      - rm -rf ./tmp
       - cd ./github.com/printezisn/serverless-blog-back/
       - make
       - make copy_to_s3
