@@ -28,7 +28,7 @@ Resources:
       TableName: "posts"
       GlobalSecondaryIndexes: 
         - 
-          IndexName: "creationTimestamp-id-index"
+          IndexName: "creationTimestamp-id-index2"
           KeySchema: 
             - 
               AttributeName: "creationTimestamp"
