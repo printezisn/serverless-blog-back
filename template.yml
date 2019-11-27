@@ -16,25 +16,7 @@ Resources:
           AttributeName: "id"
           AttributeType: "S"
         - 
-          AttributeName: "title"
-          AttributeType: "S"
-        - 
-          AttributeName: "slug"
-          AttributeType: "S"
-        - 
-          AttributeName: "description"
-          AttributeType: "S"
-        - 
-          AttributeName: "body"
-          AttributeType: "S"
-        - 
-          AttributeName: "revision"
-          AttributeType: "N"
-        - 
           AttributeName: "creationTimestamp"
-          AttributeType: "N"
-        - 
-          AttributeName: "updateTimestamp"
           AttributeType: "N"
       KeySchema: 
         - 
