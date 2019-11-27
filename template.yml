@@ -38,12 +38,10 @@ Resources:
               KeyType: "RANGE"
           Projection: 
             NonKeyAttributes: 
-              - "id"
               - "title"
               - "slug"
               - "description"
               - "revision"
-              - "creationTimestamp"
               - "updateTimestamp"
             ProjectionType: "INCLUDE"
           ProvisionedThroughput: 
