@@ -5,7 +5,7 @@ phases:
         golang: 1.13
   build:
     commands:
-      - echo "GOPATH: $GOPATH"
+      - echo "GOPATH - $GOPATH"
       - mkdir -p $GOPATH/src/github.com/printezisn/serverless-blog-back/
       - cp -r * $GOPATH/src/github.com/printezisn/serverless-blog-back/
       - cd $GOPATH/src/github.com/printezisn/serverless-blog-back/
