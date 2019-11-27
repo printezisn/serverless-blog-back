@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+        go: 1.x
+  build:
+    commands:
+      - make
+      - make copy_to_s3
+      - aws cloudformation package --template-file ./template.yml --s3-bucket $CODE_URI_BUCKET --output-template-file deployment_template.yml
+artifacts:
+  files:
+    - deployment_template.yml
