@@ -25,7 +25,7 @@ sam_deploy:
 		CodeUriBucket=${CODE_URI_BUCKET} CodeUriKey=serverless-blog-back.zip
 
 clean:
-	rm serverless-blog-back || rm serverless-blog-back.zip
+	rm serverless-blog-back serverless-blog-back.zip
 
 run:
 	sam local start-api
