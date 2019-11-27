@@ -1,13 +1,21 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+Parameters:
+  CodeUriBucket:
+    Description: 'Required. The S3 bucket where the lambda code resides.'
+    Type: 'String'
+  CodeUriKey:
+    Description: 'Required. The key in the S3 bucket where the lambda code resides.'
+    Type: 'String'
 Resources:
   EdnaBlogFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: serverless-blog-back
       Runtime: go1.x
-      MemorySize: 1024
-      Timeout: 15
+      CodeUri:
+        Bucket: !Ref CodeUriBucket
+        Key: !Ref CodeUriKey
       Events:
         EdnaBlogApiGetAll:
           Type: Api
