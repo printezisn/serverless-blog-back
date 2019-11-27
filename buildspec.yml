@@ -11,6 +11,7 @@ phases:
       - make
       - make copy_to_s3
       - aws cloudformation package --template-file ./template.yml --s3-bucket $CODE_URI_BUCKET --output-template-file deployment_template.yml
+      - ls -l
 artifacts:
   files:
-    - deployment_template.yml
+    - /go/src/github.com/printezisn/serverless-blog-back/godeployment_template.yml
