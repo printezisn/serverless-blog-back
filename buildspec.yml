@@ -5,6 +5,7 @@ phases:
         golang: 1.13
   build:
     commands:
+      - rm -rf /go/*
       - mkdir -p /go/src/github.com/printezisn/serverless-blog-back/
       - cp -r * /go/src/github.com/printezisn/serverless-blog-back/
       - cd /go/src/github.com/printezisn/serverless-blog-back/
