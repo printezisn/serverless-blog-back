@@ -85,7 +85,7 @@ func (repo *Repo) Update(revision int64, post model.BlogPost) (model.BlogPost, e
 				S: aws.String(post.ID),
 			},
 		},
-		ReturnValues:        aws.String("UPDATED_NEW"),
+		ReturnValues:        aws.String("ALL_NEW"),
 		ConditionExpression: aws.String("revision = :oldRevision"),
 		UpdateExpression: aws.String("set title = :title, description = :description, body = :body, " +
 			"updateTimestamp = :updateTimestamp, revision = :newRevision"),
