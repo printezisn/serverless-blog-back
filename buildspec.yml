@@ -6,9 +6,10 @@ phases:
   build:
     commands:
       - echo "GOPATH - $GOPATH"
-      - mkdir -p $GOPATH/src/github.com/printezisn/serverless-blog-back/
-      - cp -r * $GOPATH/src/github.com/printezisn/serverless-blog-back/
-      - cd $GOPATH/src/github.com/printezisn/serverless-blog-back/
+      - pwd
+      - mkdir -p /go/src/github.com/printezisn/serverless-blog-back/
+      - cp -r * /go/src/github.com/printezisn/serverless-blog-back/
+      - cd /go/src/github.com/printezisn/serverless-blog-back/
       - make
       - make copy_to_s3
       - aws cloudformation package --template-file ./template.yml --s3-bucket $CODE_URI_BUCKET --output-template-file deployment_template.yml
