@@ -15,6 +15,9 @@ Resources:
         - 
           AttributeName: "id"
           AttributeType: "S"
+        - 
+          AttributeName: "creationTimestamp"
+          AttributeType: "N"
       KeySchema: 
         - 
           AttributeName: "id"
@@ -23,7 +26,26 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
       TableName: "posts"
-
+      GlobalSecondaryIndexes:
+        - 
+          IndexName: "creationTimestamp-id-index"
+          KeySchema: 
+            - 
+              AttributeName: "creationTimestamp"
+              KeyType: "HASH"
+            - 
+              AttributeName: "id"
+              KeyType: "RANGE"
+          Projection: 
+            NonKeyAttributes: 
+              - "title"
+              - "description"
+              - "revision"
+              - "updateTimestamp"
+            ProjectionType: "INCLUDE"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "5"
+            WriteCapacityUnits: "5"
   EdnaBlogFunction:
     Type: AWS::Serverless::Function
     Properties:
