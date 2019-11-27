@@ -28,28 +28,6 @@ Resources:
       TableName: "posts"
       GlobalSecondaryIndexes: 
         - 
-          IndexName: "creationTimestamp-id-index"
-          KeySchema: 
-            - 
-              AttributeName: "creationTimestamp"
-              KeyType: "HASH"
-            - 
-              AttributeName: "id"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "id"
-              - "title"
-              - "slug"
-              - "description"
-              - "revision"
-              - "creationTimestamp"
-              - "updateTimestamp"
-            ProjectionType: "INCLUDE"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: "5"
-            WriteCapacityUnits: "5"
-        - 
           IndexName: "creationTimestamp-id-index2"
           KeySchema: 
             - 
