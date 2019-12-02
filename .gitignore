@@ -1,2 +1,3 @@
 serverless-blog-back
-serverless-blog-back.zip
+serverless-blog-back*.zip
+deployment_template.yml

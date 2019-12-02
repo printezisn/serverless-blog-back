@@ -4,9 +4,6 @@ Parameters:
   CodeUriBucket:
     Description: 'Required. The S3 bucket where the lambda code resides.'
     Type: 'String'
-  CodeUriKey:
-    Description: 'Required. The key in the S3 bucket where the lambda code resides.'
-    Type: 'String'
 Resources:
   postsDynamoDBTable: 
     Type: AWS::DynamoDB::Table
@@ -53,7 +50,7 @@ Resources:
       Runtime: go1.x
       CodeUri:
         Bucket: !Ref CodeUriBucket
-        Key: !Ref CodeUriKey
+        Key: serverless-blog-back.zip
       Events:
         EdnaBlogApiGetAll:
           Type: Api
