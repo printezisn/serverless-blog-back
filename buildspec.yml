@@ -4,7 +4,7 @@ phases:
     runtime-versions:
       golang: 1.13
     commands:
-      - yum install openssl
+      - yum install openssl -y
   build:
     commands:
       - rm -rf /go/*
