@@ -12,7 +12,6 @@ phases:
       - cp -r * /go/src/github.com/printezisn/serverless-blog-back/
       - cd /go/src/github.com/printezisn/serverless-blog-back/
       - make
-      - openssl md5 ./serverless-blog-back
       - aws cloudformation package --template-file ./deployment_template.yml --s3-bucket $CODE_URI_BUCKET --output-template-file cldf_template.yml
       - make update_s3_bucket
 artifacts:
