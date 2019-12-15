@@ -48,7 +48,10 @@ func (handle *Handler) Handle(request events.APIGatewayProxyRequest) (events.API
 	return events.APIGatewayProxyResponse{
 			Body: "The request is not supported",
 			Headers: map[string]string{
-				"Content-Type": "application/text",
+				"Content-Type":                 "application/text",
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
 			},
 			StatusCode: 400},
 		nil
@@ -59,7 +62,13 @@ func createBlogPost(service generic.Service, request events.APIGatewayProxyReque
 	err := json.Unmarshal([]byte(request.Body), &post)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
-				Body:       "The input model is not valid.",
+				Body: "The input model is not valid.",
+				Headers: map[string]string{
+					"Content-Type":                 "application/text",
+					"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+					"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+					"Access-Control-Allow-Origin":  "*",
+				},
 				StatusCode: 400,
 			},
 			nil
@@ -69,7 +78,12 @@ func createBlogPost(service generic.Service, request events.APIGatewayProxyReque
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
@@ -80,7 +94,13 @@ func updateBlogPost(service generic.Service, request events.APIGatewayProxyReque
 	err := json.Unmarshal([]byte(request.Body), &post)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
-				Body:       "The input model is not valid.",
+				Body: "The input model is not valid.",
+				Headers: map[string]string{
+					"Content-Type":                 "application/text",
+					"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+					"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+					"Access-Control-Allow-Origin":  "*",
+				},
 				StatusCode: 400,
 			},
 			nil
@@ -90,7 +110,12 @@ func updateBlogPost(service generic.Service, request events.APIGatewayProxyReque
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
@@ -101,7 +126,12 @@ func deleteBlogPost(service generic.Service, request events.APIGatewayProxyReque
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
@@ -112,7 +142,12 @@ func getBlogPost(service generic.Service, request events.APIGatewayProxyRequest)
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
@@ -123,7 +158,12 @@ func getAllBlogPosts(service generic.Service, request events.APIGatewayProxyRequ
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
@@ -137,7 +177,10 @@ func getMoreBlogPosts(service generic.Service, request events.APIGatewayProxyReq
 		return events.APIGatewayProxyResponse{
 				Body: "The input is invalid.",
 				Headers: map[string]string{
-					"Content-Type": "application/text",
+					"Content-Type":                 "application/text",
+					"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+					"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+					"Access-Control-Allow-Origin":  "*",
 				},
 				StatusCode: 400,
 			},
@@ -148,7 +191,12 @@ func getMoreBlogPosts(service generic.Service, request events.APIGatewayProxyReq
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
-			Body:       string(responseBytes),
+			Body: string(responseBytes),
+			Headers: map[string]string{
+				"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+				"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+				"Access-Control-Allow-Origin":  "*",
+			},
 			StatusCode: response.StatusCode,
 		},
 		nil
