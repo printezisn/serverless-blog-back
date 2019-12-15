@@ -43,6 +43,18 @@ func (handle *Handler) Handle(request events.APIGatewayProxyRequest) (events.API
 
 			return getAllBlogPosts(handle.service, request)
 		}
+		if strings.ToLower(request.HTTPMethod) == "options" {
+			return events.APIGatewayProxyResponse{
+					Body: "Success",
+					Headers: map[string]string{
+						"Content-Type":                 "application/text",
+						"Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+						"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+						"Access-Control-Allow-Origin":  "*",
+					},
+					StatusCode: 200},
+				nil
+		}
 	}
 
 	return events.APIGatewayProxyResponse{

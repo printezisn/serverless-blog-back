@@ -205,6 +205,20 @@ func TestHandleGetMoreWithInvalidInput(t *testing.T) {
 	}
 }
 
+// TestHandleOptions tests that the OPTIONS "/posts" request returns the correct response.
+func TestHandleOptions(t *testing.T) {
+	service := new(mocks.Service)
+	handler := New(service)
+
+	request := events.APIGatewayProxyRequest{Path: "/posts", HTTPMethod: "OPTIONS"}
+
+	response, _ := handler.Handle(request)
+
+	if response.StatusCode != 200 {
+		t.Errorf("The status code was expected to be 200, but it was %d.", response.StatusCode)
+	}
+}
+
 // TestInvalidRequest tests that the correct response is returned when the request is invalid.
 func TestInvalidRequest(t *testing.T) {
 	service := new(mocks.Service)
