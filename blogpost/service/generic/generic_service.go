@@ -12,5 +12,5 @@ type Service interface {
 	Delete(id string) gloBalModel.Response
 	Get(id string) gloBalModel.Response
 	GetAll() gloBalModel.Response
-	GetMore(lastID string, lastCreationTimestamp int64) gloBalModel.Response
+	GetMore(lastID string) gloBalModel.Response
 }

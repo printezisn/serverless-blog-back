@@ -374,7 +374,6 @@ func TestGetAllWithFewItems(t *testing.T) {
 		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1},
 		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1},
 	}
-	cursor := model.Cursor{}
 
 	repo.On("GetAll", service.pageSize+1).Return(posts, nil)
 
@@ -391,8 +390,8 @@ func TestGetAllWithFewItems(t *testing.T) {
 	if !compareSlices(page.Posts, posts) {
 		t.Error("The posts were expected to be ", posts, " but they were ", page.Posts)
 	}
-	if page.Cursor != cursor {
-		t.Error("The cursor was expected to be ", cursor, " but it was ", page.Cursor)
+	if page.Cursor != "" {
+		t.Error("The cursor was expected to be empty but it was ", page.Cursor)
 	}
 }
 
@@ -405,7 +404,6 @@ func TestGetAllWithMoreItems(t *testing.T) {
 		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1, CreationTimestamp: 2},
 		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1, CreationTimestamp: 1},
 	}
-	cursor := model.Cursor{CreationTimestamp: 2, ID: "id1"}
 	pageSlice := posts[:1]
 
 	repo.On("GetAll", service.pageSize+1).Return(posts, nil)
@@ -423,8 +421,8 @@ func TestGetAllWithMoreItems(t *testing.T) {
 	if !compareSlices(page.Posts, pageSlice) {
 		t.Error("The posts were expected to be ", pageSlice, " but they were ", page.Posts)
 	}
-	if page.Cursor != cursor {
-		t.Error("The cursor was expected to be ", cursor, " but it was ", page.Cursor)
+	if page.Cursor != "id1" {
+		t.Error("The cursor was expected to be id1 but it was ", page.Cursor)
 	}
 }
 
@@ -433,11 +431,10 @@ func TestGetMoreWithError(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
 	lastID := "id"
-	lastCreationTimestamp := int64(1)
 
-	repo.On("GetMore", lastID, lastCreationTimestamp, service.pageSize+1).Return([]model.BlogPost{}, errors.New("unexpected error"))
+	repo.On("GetMore", lastID, service.pageSize+1).Return([]model.BlogPost{}, errors.New("unexpected error"))
 
-	response := service.GetMore(lastID, lastCreationTimestamp)
+	response := service.GetMore(lastID)
 
 	if response.StatusCode != 500 {
 		t.Errorf("The status code was expected to be 500, but it was %d.", response.StatusCode)
@@ -452,13 +449,11 @@ func TestGetMoreWithFewItems(t *testing.T) {
 		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1},
 		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1},
 	}
-	cursor := model.Cursor{}
 	lastID := "id"
-	lastCreationTimestamp := int64(1)
 
-	repo.On("GetMore", lastID, lastCreationTimestamp, service.pageSize+1).Return(posts, nil)
+	repo.On("GetMore", lastID, service.pageSize+1).Return(posts, nil)
 
-	response := service.GetMore(lastID, lastCreationTimestamp)
+	response := service.GetMore(lastID)
 
 	if response.StatusCode != 200 {
 		t.Errorf("The status code was expected to be 200, but it was %d.", response.StatusCode)
@@ -471,8 +466,8 @@ func TestGetMoreWithFewItems(t *testing.T) {
 	if !compareSlices(page.Posts, posts) {
 		t.Error("The posts were expected to be ", posts, " but they were ", page.Posts)
 	}
-	if page.Cursor != cursor {
-		t.Error("The cursor was expected to be ", cursor, " but it was ", page.Cursor)
+	if page.Cursor != "" {
+		t.Error("The cursor was expected to be empty but it was ", page.Cursor)
 	}
 }
 
@@ -485,14 +480,12 @@ func TestGetMoreWithMoreItems(t *testing.T) {
 		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1, CreationTimestamp: 2},
 		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1, CreationTimestamp: 1},
 	}
-	cursor := model.Cursor{CreationTimestamp: 2, ID: "id1"}
 	pageSlice := posts[:1]
 	lastID := "id"
-	lastCreationTimestamp := int64(1)
 
-	repo.On("GetMore", lastID, lastCreationTimestamp, service.pageSize+1).Return(posts, nil)
+	repo.On("GetMore", lastID, service.pageSize+1).Return(posts, nil)
 
-	response := service.GetMore(lastID, lastCreationTimestamp)
+	response := service.GetMore(lastID)
 
 	if response.StatusCode != 200 {
 		t.Errorf("The status code was expected to be 200, but it was %d.", response.StatusCode)
@@ -505,8 +498,8 @@ func TestGetMoreWithMoreItems(t *testing.T) {
 	if !compareSlices(page.Posts, pageSlice) {
 		t.Error("The posts were expected to be ", pageSlice, " but they were ", page.Posts)
 	}
-	if page.Cursor != cursor {
-		t.Error("The cursor was expected to be ", cursor, " but it was ", page.Cursor)
+	if page.Cursor != "id1" {
+		t.Error("The cursor was expected to be id1 but it was ", page.Cursor)
 	}
 }
 

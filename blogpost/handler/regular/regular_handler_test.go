@@ -3,7 +3,6 @@ package regular
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"testing"
 
 	"github.com/printezisn/serverless-blog-back/blogpost/service/mocks"
@@ -159,22 +158,21 @@ func TestHandleGetAllWithSuccess(t *testing.T) {
 	}
 }
 
-// TestHandleGetMoreWithSuccess tests that the GET "/posts?lastID=...&lastCreationTimestamp=..." request returns the correct
+// TestHandleGetMoreWithSuccess tests that the GET "/posts?lastID=..." request returns the correct
 // response when the operation is successful.
 func TestHandleGetMoreWithSuccess(t *testing.T) {
 	service := new(mocks.Service)
 	handler := New(service)
 
 	lastID := "lastID"
-	lastCreationTimestamp := int64(0)
-	path := fmt.Sprintf("/posts?lastID=%s&lastCreationTimestamp=%d", lastID, lastCreationTimestamp)
-	queryStringParameters := map[string]string{"lastID": lastID, "lastCreationTimestamp": strconv.FormatInt(lastCreationTimestamp, 10)}
+	path := fmt.Sprintf("/posts?lastID=%s", lastID)
+	queryStringParameters := map[string]string{"lastID": lastID}
 	request := events.APIGatewayProxyRequest{Path: path, HTTPMethod: "GET", QueryStringParameters: queryStringParameters}
 	expectedResponse := globalModel.Response{Entity: "response", StatusCode: 200}
 	expectedResponseBytes, _ := json.Marshal(expectedResponse)
 	expectedResponseJSON := string(expectedResponseBytes)
 
-	service.On("GetMore", lastID, lastCreationTimestamp).Return(expectedResponse)
+	service.On("GetMore", lastID).Return(expectedResponse)
 
 	actualResponse, _ := handler.Handle(request)
 
@@ -186,16 +184,15 @@ func TestHandleGetMoreWithSuccess(t *testing.T) {
 	}
 }
 
-// TestHandleGetMoreWithInvalidInput tests that the GET "/posts?lastID=...&lastCreationTimestamp=..." request returns the correct
+// TestHandleGetMoreWithInvalidInput tests that the GET "/posts?lastID=..." request returns the correct
 // response when the input is invalid.
 func TestHandleGetMoreWithInvalidInput(t *testing.T) {
 	service := new(mocks.Service)
 	handler := New(service)
 
-	lastID := "lastID"
-	lastCreationTimestamp := "invalid"
-	path := fmt.Sprintf("/posts?lastID=%s&lastCreationTimestamp=%s", lastID, lastCreationTimestamp)
-	queryStringParameters := map[string]string{"lastID": lastID, "lastCreationTimestamp": lastCreationTimestamp}
+	lastID := "  "
+	path := fmt.Sprintf("/posts?lastID=%s", lastID)
+	queryStringParameters := map[string]string{"lastID": lastID}
 	request := events.APIGatewayProxyRequest{Path: path, HTTPMethod: "GET", QueryStringParameters: queryStringParameters}
 
 	response, _ := handler.Handle(request)

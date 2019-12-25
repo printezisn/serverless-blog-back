@@ -144,15 +144,15 @@ func (service *Service) GetAll() gloBalModel.Response {
 	if hasMore {
 		page.Posts = page.Posts[:service.pageSize]
 		lastItem := page.Posts[service.pageSize-1]
-		page.Cursor = model.Cursor{ID: lastItem.ID, CreationTimestamp: lastItem.CreationTimestamp}
+		page.Cursor = lastItem.ID
 	}
 
 	return gloBalModel.Response{Entity: page, Errors: []string{}, StatusCode: 200}
 }
 
 // GetMore fetches more blog posts (limit is 10).
-func (service *Service) GetMore(lastID string, lastCreationTimestamp int64) gloBalModel.Response {
-	posts, err := service.repo.GetMore(lastID, lastCreationTimestamp, service.pageSize+1)
+func (service *Service) GetMore(lastID string) gloBalModel.Response {
+	posts, err := service.repo.GetMore(lastID, service.pageSize+1)
 
 	if err != nil {
 		log.Println("An error occurred while fetching more blog posts: ", err)
@@ -165,7 +165,7 @@ func (service *Service) GetMore(lastID string, lastCreationTimestamp int64) gloB
 	if hasMore {
 		page.Posts = page.Posts[:service.pageSize]
 		lastItem := page.Posts[service.pageSize-1]
-		page.Cursor = model.Cursor{ID: lastItem.ID, CreationTimestamp: lastItem.CreationTimestamp}
+		page.Cursor = lastItem.ID
 	}
 
 	return gloBalModel.Response{Entity: page, Errors: []string{}, StatusCode: 200}

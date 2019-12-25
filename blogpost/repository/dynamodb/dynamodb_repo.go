@@ -14,7 +14,6 @@ import (
 // Repo represents a repository for blog posts that uses DynamoDB.
 type Repo struct {
 	tableName string
-	indexName string
 	client    *dynamodb.DynamoDB
 }
 
@@ -25,7 +24,7 @@ func New() Repo {
 		tableName = "posts"
 	}
 
-	return Repo{tableName: tableName, indexName: "creationTimestamp-id-index", client: nil}
+	return Repo{tableName: tableName, client: nil}
 }
 
 // createClient creates a new DynamoDB client.
@@ -142,10 +141,7 @@ func (repo *Repo) GetAll(pageSize int64) ([]model.BlogPost, error) {
 	repo.createClient()
 
 	scanInput := &dynamodb.ScanInput{
-		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("description"),
-			aws.String("revision"), aws.String("creationTimestamp"), aws.String("updateTimestamp")},
 		TableName: aws.String(repo.tableName),
-		IndexName: aws.String(repo.indexName),
 		Limit:     aws.Int64(pageSize),
 	}
 
@@ -164,22 +160,16 @@ func (repo *Repo) GetAll(pageSize int64) ([]model.BlogPost, error) {
 }
 
 // GetMore loads more blog posts from the database.
-func (repo *Repo) GetMore(lastID string, lastCreationTimestamp int64, pageSize int64) ([]model.BlogPost, error) {
+func (repo *Repo) GetMore(lastID string, pageSize int64) ([]model.BlogPost, error) {
 	repo.createClient()
 
 	scanInput := &dynamodb.ScanInput{
-		AttributesToGet: []*string{aws.String("id"), aws.String("title"), aws.String("description"),
-			aws.String("revision"), aws.String("creationTimestamp"), aws.String("updateTimestamp")},
 		ExclusiveStartKey: map[string]*dynamodb.AttributeValue{
-			"creationTimestamp": {
-				N: aws.String(strconv.FormatInt(lastCreationTimestamp, 10)),
-			},
 			"id": {
 				S: aws.String(lastID),
 			},
 		},
 		TableName: aws.String(repo.tableName),
-		IndexName: aws.String(repo.indexName),
 		Limit:     aws.Int64(pageSize),
 	}
 

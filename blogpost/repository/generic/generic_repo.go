@@ -9,5 +9,5 @@ type Repo interface {
 	Get(id string) (model.BlogPost, bool, error)
 	Delete(id string) (bool, error)
 	GetAll(pageSize int64) ([]model.BlogPost, error)
-	GetMore(lastID string, lastCreationTimestamp int64, pageSize int64) ([]model.BlogPost, error)
+	GetMore(lastID string, pageSize int64) ([]model.BlogPost, error)
 }

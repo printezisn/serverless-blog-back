@@ -103,13 +103,13 @@ func (_m *Repo) GetAll(pageSize int64) ([]model.BlogPost, error) {
 	return r0, r1
 }
 
-// GetMore provides a mock function with given fields: lastID, lastCreationTimestamp, pageSize
-func (_m *Repo) GetMore(lastID string, lastCreationTimestamp int64, pageSize int64) ([]model.BlogPost, error) {
-	ret := _m.Called(lastID, lastCreationTimestamp, pageSize)
+// GetMore provides a mock function with given fields: lastID, pageSize
+func (_m *Repo) GetMore(lastID string, pageSize int64) ([]model.BlogPost, error) {
+	ret := _m.Called(lastID, pageSize)
 
 	var r0 []model.BlogPost
-	if rf, ok := ret.Get(0).(func(string, int64, int64) []model.BlogPost); ok {
-		r0 = rf(lastID, lastCreationTimestamp, pageSize)
+	if rf, ok := ret.Get(0).(func(string, int64) []model.BlogPost); ok {
+		r0 = rf(lastID, pageSize)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]model.BlogPost)
@@ -117,8 +117,8 @@ func (_m *Repo) GetMore(lastID string, lastCreationTimestamp int64, pageSize int
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, int64, int64) error); ok {
-		r1 = rf(lastID, lastCreationTimestamp, pageSize)
+	if rf, ok := ret.Get(1).(func(string, int64) error); ok {
+		r1 = rf(lastID, pageSize)
 	} else {
 		r1 = ret.Error(1)
 	}

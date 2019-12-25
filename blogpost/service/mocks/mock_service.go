@@ -67,13 +67,13 @@ func (_m *Service) GetAll() globalmodel.Response {
 	return r0
 }
 
-// GetMore provides a mock function with given fields: lastID, lastCreationTimestamp
-func (_m *Service) GetMore(lastID string, lastCreationTimestamp int64) globalmodel.Response {
-	ret := _m.Called(lastID, lastCreationTimestamp)
+// GetMore provides a mock function with given fields: lastID
+func (_m *Service) GetMore(lastID string) globalmodel.Response {
+	ret := _m.Called(lastID)
 
 	var r0 globalmodel.Response
-	if rf, ok := ret.Get(0).(func(string, int64) globalmodel.Response); ok {
-		r0 = rf(lastID, lastCreationTimestamp)
+	if rf, ok := ret.Get(0).(func(string) globalmodel.Response); ok {
+		r0 = rf(lastID)
 	} else {
 		r0 = ret.Get(0).(globalmodel.Response)
 	}

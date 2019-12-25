@@ -17,16 +17,10 @@ type BlogPost struct {
 	UpdateTimestamp   int64  `json:"updateTimestamp"`
 }
 
-// Cursor represents the cursor of a blog post page.
-type Cursor struct {
-	ID                string `json:"id"`
-	CreationTimestamp int64  `json:"creationTimestamp"`
-}
-
 // Page represents a page of blog posts.
 type Page struct {
 	Posts  []BlogPost `json:"posts"`
-	Cursor Cursor     `json:"cursor"`
+	Cursor string     `json:"cursor"`
 }
 
 // Validate checks if a BlogPost instance is valid and returns an error. If it's valid, it returns nil.

@@ -2,7 +2,6 @@ package regular
 
 import (
 	"encoding/json"
-	"strconv"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -37,7 +36,7 @@ func (handle *Handler) Handle(request events.APIGatewayProxyRequest) (events.API
 			if request.PathParameters["id"] != "" {
 				return getBlogPost(handle.service, request)
 			}
-			if request.QueryStringParameters["lastID"] != "" && request.QueryStringParameters["lastCreationTimestamp"] != "" {
+			if request.QueryStringParameters["lastID"] != "" {
 				return getMoreBlogPosts(handle.service, request)
 			}
 
@@ -183,9 +182,8 @@ func getAllBlogPosts(service generic.Service, request events.APIGatewayProxyRequ
 
 func getMoreBlogPosts(service generic.Service, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	lastID := request.QueryStringParameters["lastID"]
-	lastCreationTimestamp, err := strconv.ParseInt(request.QueryStringParameters["lastCreationTimestamp"], 10, 64)
 
-	if strings.TrimSpace(lastID) == "" || err != nil {
+	if strings.TrimSpace(lastID) == "" {
 		return events.APIGatewayProxyResponse{
 				Body: "The input is invalid.",
 				Headers: map[string]string{
@@ -199,7 +197,7 @@ func getMoreBlogPosts(service generic.Service, request events.APIGatewayProxyReq
 			nil
 	}
 
-	response := service.GetMore(lastID, lastCreationTimestamp)
+	response := service.GetMore(lastID)
 	responseBytes, _ := json.Marshal(response)
 
 	return events.APIGatewayProxyResponse{
