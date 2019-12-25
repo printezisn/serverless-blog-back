@@ -18,8 +18,6 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "id"
           AttributeType: "S"
-        - AttributeName: "creationTimestamp"
-          AttributeType: "N"
       KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
