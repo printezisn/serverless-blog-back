@@ -4,13 +4,6 @@ Parameters:
   CodeUriBucket:
     Description: "Required. The S3 bucket where the lambda code resides."
     Type: "String"
-Globals:
-  Api:
-    EndpointConfiguration: EDGE
-    Cors:
-      AllowMethods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
-      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-      AllowOrigin: "'*'"
 Resources:
   postsDynamoDBTable:
     Type: AWS::DynamoDB::Table
@@ -25,6 +18,44 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
       TableName: "posts"
+  EdnaBlogUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      UserPoolName: EdnaBlogUsers
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+  EdnaBlogUserPoolTokenClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref EdnaBlogUserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - USER_PASSWORD_AUTH
+  EdnaBlogServiceApi:
+    DependsOn: EdnaBlogUserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: EdnaBlogServiceApi
+      StageName: Prod
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt "EdnaBlogUserPool.Arn"
   EdnaBlogFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -38,29 +69,41 @@ Resources:
           Type: Api
           Properties:
             Path: /posts
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: GET
         EdnaBlogApiOptions:
           Type: Api
           Properties:
             Path: /posts
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: OPTIONS
         EdnaBlogApiGet:
           Type: Api
           Properties:
             Path: /posts/{id+}
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: GET
         EdnaBlogApiDelete:
           Type: Api
           Properties:
             Path: /posts/{id+}
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: DELETE
+            Auth:
+              Authorizer: CognitoAuthorizer
         EdnaBlogApiPut:
           Type: Api
           Properties:
             Path: /posts
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: PUT
+            Auth:
+              Authorizer: CognitoAuthorizer
         EdnaBlogApiPost:
           Type: Api
           Properties:
             Path: /posts
+            RestApiId: !Ref EdnaBlogServiceApi
             Method: POST
+            Auth:
+              Authorizer: CognitoAuthorizer
