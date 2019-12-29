@@ -22,7 +22,7 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       AdminCreateUserConfig:
-        AllowAdminCreateUserOnly: false
+        AllowAdminCreateUserOnly: true
       UserPoolName: EdnaBlogUsers
       UsernameAttributes:
         - email
@@ -42,6 +42,18 @@ Resources:
       GenerateSecret: false
       ExplicitAuthFlows:
         - USER_PASSWORD_AUTH
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthScopes:
+        - email
+        - openid
+      CallbackURLs:
+        - http://localhost:8000/
+        - http://localhost:9000/
+      LogoutURLs:
+        - http://localhost:8000/
+        - http://localhost:9000/
   EdnaBlogServiceApi:
     DependsOn: EdnaBlogUserPool
     Type: AWS::Serverless::Api
