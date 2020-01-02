@@ -11,7 +11,10 @@ type BlogPost struct {
 	ID                string `json:"id"`
 	Title             string `json:"title"`
 	Description       string `json:"description"`
+	Tags              string `json:"tags"`
 	Body              string `json:"body"`
+	Template          string `json:"template"`
+	Category          string `json:"category"`
 	Revision          int64  `json:"revision"`
 	CreationTimestamp int64  `json:"creationTimestamp"`
 	UpdateTimestamp   int64  `json:"updateTimestamp"`
@@ -40,8 +43,20 @@ func (post BlogPost) Validate() []string {
 			validation.Required.Error("The description is required."),
 			validation.Length(0, 250).Error("The description may have up tp 250 characters.")),
 		validation.Field(
+			&post.Tags,
+			validation.Required.Error("The tags are required."),
+			validation.Length(0, 250).Error("The tags may have up tp 250 characters.")),
+		validation.Field(
 			&post.Body,
 			validation.Required.Error("The body is required.")),
+		validation.Field(
+			&post.Template,
+			validation.Required.Error("The template is required."),
+			validation.Length(0, 50).Error("The template may have up tp 50 characters.")),
+		validation.Field(
+			&post.Category,
+			validation.Required.Error("The category is required."),
+			validation.Length(0, 250).Error("The category may have up tp 250 characters.")),
 		validation.Field(
 			&post.Revision,
 			validation.Required.Error("The revision is required.")))

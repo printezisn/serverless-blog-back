@@ -14,8 +14,14 @@ func TestValidateWithRequiredErrors(t *testing.T) {
 		{BlogPost{ID: "test_id"}, true},
 		{BlogPost{ID: "test_id", Title: "test_title"}, true},
 		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_description"}, true},
-		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Revision: 1}, true},
-		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Revision: 1, Body: "test_body"}, false},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_description", Tags: "test_tags"}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags", Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags", Revision: 1,
+			Body: "test_body"}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags", Revision: 1,
+			Body: "test_body", Template: "test_template"}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags", Revision: 1,
+			Body: "test_body", Template: "test_template", Category: "test_category"}, false},
 	}
 
 	for _, testCase := range testCases {
@@ -40,11 +46,20 @@ func TestValidateWithLengthErrors(t *testing.T) {
 		hasErrors bool
 	}{
 
-		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Body: "test_body", Revision: 1}, false},
-		{BlogPost{ID: longStr, Title: "test_title", Description: "test_descr", Body: "test_body", Revision: 1}, true},
-		{BlogPost{ID: "test_id", Title: longStr, Description: "test_descr", Body: "test_body", Revision: 1}, true},
-		{BlogPost{ID: "test_id", Title: "test_title", Description: longStr, Body: "test_body", Revision: 1}, true},
-		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Body: longStr, Revision: 1}, false},
+		{BlogPost{ID: longStr, Title: "test_title", Description: "test_descr", Tags: "test_tags",
+			Body: "test_body", Template: "test_template", Category: "test_category", Revision: 1}, true},
+		{BlogPost{ID: "test_str", Title: longStr, Description: "test_descr", Tags: "test_tags",
+			Body: "test_body", Template: "test_template", Category: "test_category", Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: longStr, Tags: "test_tags",
+			Body: "test_body", Template: "test_template", Category: "test_category", Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: longStr,
+			Body: "test_body", Template: "test_template", Category: "test_category", Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags",
+			Body: "test_body", Template: longStr, Category: "test_category", Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags",
+			Body: "test_body", Template: "test_template", Category: longStr, Revision: 1}, true},
+		{BlogPost{ID: "test_id", Title: "test_title", Description: "test_descr", Tags: "test_tags",
+			Body: "test_body", Template: "test_template", Category: "test_category", Revision: 1}, false},
 	}
 
 	for _, testCase := range testCases {

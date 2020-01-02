@@ -45,7 +45,8 @@ func TestCreateWithValidationErrors(t *testing.T) {
 func TestCreateWithNonConditionalError(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	repo.On("Create", mock.MatchedBy(matchedByPost(post))).Return(post, errors.New("unexpected error"))
 
@@ -61,8 +62,10 @@ func TestCreateWithNonConditionalError(t *testing.T) {
 func TestCreateWithConditionalErrorAndConflicts(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -82,8 +85,10 @@ func TestCreateWithConditionalErrorAndConflicts(t *testing.T) {
 func TestCreateWithConditionalErrorAndNoConflicts(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -106,7 +111,8 @@ func TestCreateWithConditionalErrorAndNoConflicts(t *testing.T) {
 func TestCreateWithConditionalErrorAndFailure(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -125,7 +131,8 @@ func TestCreateWithConditionalErrorAndFailure(t *testing.T) {
 func TestCreateWithSuccess(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	repo.On("Create", mock.MatchedBy(matchedByPost(post))).Return(post, nil)
 
@@ -160,8 +167,10 @@ func TestUpdateWithValidationErrors(t *testing.T) {
 func TestUpdateWithNonConditionalError(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	repo.On("Update", int64(1), mock.MatchedBy(matchedByPost(postUpdate))).Return(postUpdate, errors.New("unexpected error"))
 
@@ -177,9 +186,12 @@ func TestUpdateWithNonConditionalError(t *testing.T) {
 func TestUpdateWithConditionalErrorAndConflicts(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
-	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr2", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
+	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr2", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -199,9 +211,12 @@ func TestUpdateWithConditionalErrorAndConflicts(t *testing.T) {
 func TestUpdateWithConditionalErrorAndNoConflicts(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
-	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
+	storedPost := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -224,8 +239,10 @@ func TestUpdateWithConditionalErrorAndNoConflicts(t *testing.T) {
 func TestUpdateWithConditionalErrorAndFailure(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	err := awserr.New("ConditionalCheckFailedException", "error", errors.New("error"))
 	requestFailure := awserr.NewRequestFailure(err, 400, "1")
@@ -244,8 +261,10 @@ func TestUpdateWithConditionalErrorAndFailure(t *testing.T) {
 func TestUpdateWithSuccess(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
-	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 2}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
+	postUpdate := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 2}
 
 	repo.On("Update", int64(1), mock.MatchedBy(matchedByPost(postUpdate))).Return(postUpdate, nil)
 
@@ -323,7 +342,8 @@ func TestGetWithError(t *testing.T) {
 func TestGetWithNotFound(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	repo.On("Get", post.ID).Return(post, false, nil)
 
@@ -338,7 +358,8 @@ func TestGetWithNotFound(t *testing.T) {
 func TestGetWithFound(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
-	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Body: "body", Revision: 1}
+	post := model.BlogPost{ID: "id", Title: "title", Description: "descr", Tags: "tags", Body: "body", Template: "template",
+		Category: "category", Revision: 1}
 
 	repo.On("Get", post.ID).Return(post, true, nil)
 
@@ -371,8 +392,10 @@ func TestGetAllWithFewItems(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
 	posts := []model.BlogPost{
-		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1},
-		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1},
+		model.BlogPost{ID: "id1", Title: "title1", Description: "descr", Tags: "tags1", Body: "body1", Template: "template1",
+			Category: "category1", Revision: 1},
+		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Tags: "tags2", Body: "body2", Template: "template2",
+			Category: "category2", Revision: 1},
 	}
 
 	repo.On("GetAll", service.pageSize+1).Return(posts, nil)
@@ -401,8 +424,10 @@ func TestGetAllWithMoreItems(t *testing.T) {
 	service := New(repo)
 	service.pageSize = 1
 	posts := []model.BlogPost{
-		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1, CreationTimestamp: 2},
-		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1, CreationTimestamp: 1},
+		model.BlogPost{ID: "id1", Title: "title1", Description: "descr", Tags: "tags1", Body: "body1", Template: "template1",
+			Category: "category1", Revision: 1, CreationTimestamp: 2},
+		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Tags: "tags2", Body: "body2", Template: "template2",
+			Category: "category2", Revision: 1, CreationTimestamp: 1},
 	}
 	pageSlice := posts[:1]
 
@@ -446,8 +471,10 @@ func TestGetMoreWithFewItems(t *testing.T) {
 	repo := new(repoMocks.Repo)
 	service := New(repo)
 	posts := []model.BlogPost{
-		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1},
-		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1},
+		model.BlogPost{ID: "id1", Title: "title1", Description: "descr", Tags: "tags1", Body: "body1", Template: "template1",
+			Category: "category1", Revision: 1},
+		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Tags: "tags2", Body: "body2", Template: "template2",
+			Category: "category2", Revision: 1},
 	}
 	lastID := "id"
 
@@ -477,8 +504,10 @@ func TestGetMoreWithMoreItems(t *testing.T) {
 	service := New(repo)
 	service.pageSize = 1
 	posts := []model.BlogPost{
-		model.BlogPost{ID: "id1", Title: "title1", Description: "descr1", Body: "body1", Revision: 1, CreationTimestamp: 2},
-		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Body: "body2", Revision: 1, CreationTimestamp: 1},
+		model.BlogPost{ID: "id1", Title: "title1", Description: "descr", Tags: "tags1", Body: "body1", Template: "template1",
+			Category: "category1", Revision: 1, CreationTimestamp: 2},
+		model.BlogPost{ID: "id2", Title: "title2", Description: "descr2", Tags: "tags2", Body: "body2", Template: "template2",
+			Category: "category2", Revision: 1, CreationTimestamp: 1},
 	}
 	pageSlice := posts[:1]
 	lastID := "id"

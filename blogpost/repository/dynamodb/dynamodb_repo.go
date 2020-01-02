@@ -65,8 +65,17 @@ func (repo *Repo) Update(revision int64, post model.BlogPost) (model.BlogPost, e
 			":description": {
 				S: aws.String(post.Description),
 			},
+			":tags": {
+				S: aws.String(post.Tags),
+			},
 			":body": {
 				S: aws.String(post.Body),
+			},
+			":template": {
+				S: aws.String(post.Template),
+			},
+			":category": {
+				S: aws.String(post.Category),
 			},
 			":updateTimestamp": {
 				N: aws.String(strconv.FormatInt(post.UpdateTimestamp, 10)),
@@ -86,8 +95,9 @@ func (repo *Repo) Update(revision int64, post model.BlogPost) (model.BlogPost, e
 		},
 		ReturnValues:        aws.String("ALL_NEW"),
 		ConditionExpression: aws.String("revision = :oldRevision"),
-		UpdateExpression: aws.String("set title = :title, description = :description, body = :body, " +
-			"updateTimestamp = :updateTimestamp, revision = :newRevision"),
+		UpdateExpression: aws.String("set title = :title, description = :description, tags = :tags, " +
+			"body = :body, template = :template, category = :category, updateTimestamp = :updateTimestamp, " +
+			"revision = :newRevision"),
 	}
 
 	response, err := repo.client.UpdateItem(input)
