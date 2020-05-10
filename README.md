@@ -2,8 +2,6 @@
 
 A series of projects showing how you can build a serverless blog in AWS. This project contains the back-end part of the application. You can find the front-end part in https://github.com/printezisn/serverless-blog-front.
 
-My personal blog was built this way: https://ednablog.com.
-
 ## Built With
 
 The project is built in Go and uses the following AWS components:
